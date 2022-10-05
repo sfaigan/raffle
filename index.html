@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./script.js" type="text/javascript"></script>
+    <noscript>Sorry, your browser does not support JavaScript!</noscript>
+  </head>
+  <body>
+    <!-- <img class="logo" src="https://via.placeholder.com/1080x360"> -->
+    <div class="card">
+      <div id="start-menu" class="menu start-menu">
+        <button id="toggle-start-menu" class="accordion">Raffle</button>
+        <div id="start-menu-panel" class="panel">
+          <form id="start-form" class="start-form" onSubmit="handleGenerateRaffle()">
+            <p>
+              <label>Number of Tickets: </label>
+              <input id="number-tickets" class="input">
+            </p>
+            <button id="generate-raffle-grid" role="button" class="button generate-raffle-button" type="submit">Start New Raffle</button>
+          </form>
+        </div>
+      </div>
+      <div id="raffle-menu" class="menu hidden">
+        <button id="draw-number" role="button" class="button draw-number-button" type="button" onClick="handleDrawNumber()">Draw Number</button>
+        <p id="ticket-count" class="ticket-count"></p>
+        <p id="number-drawn" class="number-drawn"></p>
+        <div id="grid" class="grid-container"></div>
+      </div>
+      <div id="number-drawn-popup" class="number-drawn-popup zero-out"></div>
+    </div>
+  </body>
+</html>
