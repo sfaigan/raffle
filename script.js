@@ -21,35 +21,51 @@ function saveDrawnNumber(number) {
   localStorage.setItem("drawn", JSON.stringify(numbersDrawn));
 }
 
-function generateRaffle() {
-  var inProgress = getRaffleInfo("inProgress");
-  if (inProgress) {
-    var numTickets = getRaffleInfo("numTickets");
-    var drawn = getRaffleInfo("drawn");
-    var container = document.getElementById("grid");
-    container.replaceChildren();
-    var children = [];
-    for (var i = 1; i <= numTickets; i++) {
+function generateGrid() {
+  var hideDrawnTickets = document.getElementById("toggle-filter").checked;
+  var numTickets = getRaffleInfo("numTickets");
+  var drawn = getRaffleInfo("drawn");
+  var container = document.getElementById("grid");
+  container.replaceChildren();
+  var children = [];
+  for (var i = 1; i <= numTickets; i++) {
+    if (!hideDrawnTickets || (hideDrawnTickets && !drawn.includes(i))) {
       var gridCell = document.createElement("div");
-      gridCell.className = drawn.includes(i) ? "grid-cell drawn" : "grid-cell"
+      gridCell.className = drawn.includes(i) ? "grid-cell drawn" : "grid-cell";
       gridCell.append(i.toString());
       container.append(gridCell);
     }
+  }
+}
+
+function updateLastNumberDrawn(number = null) {
+  var numberDrawn = document.getElementById("number-drawn");
+  var text = number ? "Last Number Drawn: " + number.toString() : "Draw a number!";
+  numberDrawn.innerText = text;
+}
+
+function generateRaffle() {
+  var inProgress = getRaffleInfo("inProgress");
+  if (inProgress) {
+    generateGrid();
     var raffleMenu = document.getElementById("raffle-menu");
     raffleMenu.className = "menu";
     toggleStartMenu.call(document.getElementById("toggle-start-menu"));
   }
 }
 
-function handleGenerateRaffle() {
+function handleStartNewRaffle() {
   var inProgress = getRaffleInfo("inProgress");
   if (inProgress && !confirm("Raffle in progress, are you sure you want to restart?")) {
     return false;
   }
   var numTickets = document.getElementById("number-tickets").value;
-  setRaffleInfo(true, numTickets)
+  setRaffleInfo(true, numTickets);
+  var hideDrawnTickets = document.getElementById("toggle-filter");
+  hideDrawnTickets.checked = false;
   generateRaffle();
   updateTicketCount();
+  updateLastNumberDrawn();
   return false;
 }
 
@@ -83,12 +99,11 @@ function handleDrawNumber() {
     if (!drawnNumbers.includes(i))
       remainingNumbers.push(i);
   }
-  var number = remainingNumbers[Math.floor(Math.random()*remainingNumbers.length)];
-  saveDrawnNumber(number)
+  var number = remainingNumbers[Math.floor(Math.random() * remainingNumbers.length)];
+  saveDrawnNumber(number);
 
   updateTicketCount();
-  var numberDrawn = document.getElementById("number-drawn");
-  numberDrawn.innerText = "Last Number Drawn: " + number.toString();
+  updateLastNumberDrawn(number);
 
   var popup = document.getElementById("number-drawn-popup");
   popup.innerText = number.toString();
@@ -108,6 +123,18 @@ function handleDrawNumber() {
 
   var cell = document.querySelector(`#grid :nth-child(${number})`);
   cell.classList.toggle("drawn");
+
+  var hideDrawnTickets = document.getElementById("toggle-filter").checked;
+  if (hideDrawnTickets) {
+    generateGrid();
+  }
+}
+
+function handleFilter() {
+  var drawnNumbers = getRaffleInfo("drawn");
+  if (drawnNumbers.length) {
+    generateGrid();
+  }
 }
 
 window.onload = function onLoad() {
@@ -117,7 +144,7 @@ window.onload = function onLoad() {
 
   // Prevent form from refreshing page
   var form = document.getElementById("start-form");
-  function handleForm(event) { event.preventDefault(); } 
+  function handleForm(event) { event.preventDefault(); }
   form.addEventListener('submit', handleForm);
 
   var raffleMenu = document.getElementById("raffle-menu");
@@ -130,7 +157,7 @@ window.onload = function onLoad() {
     updateTicketCount();
   } else {
     // Set up for new raffle
-    setRaffleInfo()
+    setRaffleInfo();
     toggleStartMenu.call(startMenuBtn);
     raffleMenu.className = "menu hidden";
   }
