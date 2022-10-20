@@ -7,9 +7,8 @@ body {
 
 .logo {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
+  max-height: 5rem;
 }
 
 .card {
@@ -54,8 +53,8 @@ body {
 }
 
 /* Start Menu */
-.start-form {
-  display: inline-block;
+form {
+  display: block;
   margin: 1rem 0;
 }
 
@@ -65,6 +64,16 @@ body {
 
 .input {
   height: 100%;
+}
+
+.upload-logo-container {
+  display: block;
+  height: 100%;
+  margin: 1rem 0;
+}
+
+input[type="file"] {
+  display: none;
 }
 
 .accordion {
@@ -117,7 +126,7 @@ body {
   display: grid;
   column-gap: 1rem;
   grid-row-gap: 1rem;
-  grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
+  grid-template-columns: repeat( auto-fit, minmax(100px, 1fr) );
   padding: 1rem;
   margin-top: 1rem;
 }
@@ -175,4 +184,11 @@ body {
 
 .opaque {
   opacity: 1;
+}
+
+.ticket-info {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(150px, 1fr) );
+  font-size: 16px;
+  margin-top: 1rem;
 }

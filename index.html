@@ -7,7 +7,6 @@
     <noscript>Sorry, your browser does not support JavaScript!</noscript>
   </head>
   <body>
-    <!-- <img class="logo" src="https://via.placeholder.com/1080x360"> -->
     <div class="card">
       <div id="start-menu" class="menu start-menu">
         <button id="toggle-start-menu" class="accordion">Raffle</button>
@@ -19,16 +18,23 @@
             </p>
             <button id="generate-raffle-grid" role="button" class="button generate-raffle-button" type="submit">Start New Raffle</button>
           </form>
+          <div class="upload-logo-container">
+            <label for="upload-logo-input" class="button">Upload Logo</label>
+            <input id="upload-logo-input" type="file" accept="image/*" onchange="handleUploadLogo(this)"/>
+          </div>
         </div>
       </div>
+      <img id="logo" class="logo" style="display: none;">
       <div id="raffle-menu" class="menu hidden">
         <button id="draw-number" role="button" class="button draw-number-button" type="button" onClick="handleDrawNumber()">Draw Number</button>
-        <p id="ticket-count" class="ticket-count"></p>
-        <p id="number-drawn" class="number-drawn"></p>
-        <p>
-          <label>Hide Drawn Tickets: </label>
-          <input id="toggle-filter" type="checkbox" onchange="handleFilter()">
-        </p>
+        <div class="ticket-info">
+          <div id="ticket-count" class="ticket-count"></div>
+          <div id="number-drawn" class="number-drawn"></div>
+          <div>
+            <label for="toggle-filter">Hide Drawn Tickets: </label>
+            <input id="toggle-filter" type="checkbox" onchange="handleFilter()">
+          </div>
+        </div>
         <div id="grid" class="grid-container"></div>
       </div>
       <div id="number-drawn-popup" class="number-drawn-popup zero-out"></div>
